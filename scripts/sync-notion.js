@@ -11,8 +11,14 @@ const fs = require('fs');
 const token = process.env.NOTION_TOKEN;
 const dbId = process.env.NOTION_DB_ID;
 
-if (!token || !dbId) {
-  console.error('Missing NOTION_TOKEN or NOTION_DB_ID');
+if (!token) {
+  // Setup not finished yet (NOTION_TOKEN secret not added). Skip quietly so the
+  // scheduled run doesn't fail — see README "Eenmalige setup".
+  console.log('NOTION_TOKEN not set yet — skipping sync. Add the secret to enable it.');
+  process.exit(0);
+}
+if (!dbId) {
+  console.error('Missing NOTION_DB_ID');
   process.exit(1);
 }
 
