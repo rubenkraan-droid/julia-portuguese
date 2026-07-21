@@ -1,0 +1,42 @@
+name: Sync content from Notion
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'   # every 30 minutes
+  workflow_dispatch:          # adds a manual "Run workflow" button
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-notion
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch content from Notion
+        run: node scripts/sync-notion.js
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          # Database id of "Julia T. — Website content". Not secret; safe to keep here.
+          NOTION_DB_ID: 6386b6a5554c445396c18061c7cf0875
+
+      - name: Commit if content changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add content.json
+          if git diff --staged --quiet; then
+            echo "No content changes."
+          else
+            git commit -m "Sync content from Notion"
+            git push
+          fi
