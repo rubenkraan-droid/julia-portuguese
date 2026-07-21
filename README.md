@@ -1,57 +1,71 @@
 # Julia T. — website
 
-Statische één-pagina site (GitHub Pages). De inhoud komt uit een Notion-database,
-zodat Julia teksten kan bewerken zonder code aan te raken.
+A static one-page site (GitHub Pages). The content comes from a Notion database,
+so Julia can edit the text without touching any code.
 
 **Live:** https://rubenkraan-droid.github.io/julia-portuguese/
 
-## Hoe het werkt
+## How it works
 
 ```
 Notion (database "Julia T. — Website content")
-   │   GitHub Action leest Notion elk half uur (of bij "Run workflow")
+   │   A GitHub Action reads Notion every 30 minutes (or on "Run workflow")
    ▼
-content.json  ──►  index.html leest dit in bij elke paginalading
+content.json  ──►  index.html loads this on every page view
 ```
 
-- `index.html` — de site. Elk bewerkbaar stukje heeft een `data-cms="..."`-label.
-- `content.json` — de actuele teksten (automatisch bijgewerkt, niet met de hand aanpassen).
-- `scripts/sync-notion.js` — leest de Notion-database en schrijft `content.json`.
-- `.github/workflows/sync-notion.yml` — draait het script periodiek + met een knop.
+- `index.html` — the site. Every editable piece has a `data-cms="..."` label.
+- `content.json` — the current text (updated automatically; don't edit by hand).
+- `scripts/sync-notion.js` — reads the Notion database and writes `content.json`.
+- `.github/workflows/sync-notion.yml` — runs the script on a schedule + on a button.
 
-## Eenmalige setup (nodig zodat de sync werkt)
+## One-time setup (required for the sync to work)
 
-De GitHub Action heeft een eigen Notion-sleutel nodig — deze wordt éénmalig ingesteld.
+The GitHub Action needs its own Notion key — set this up once.
 
-1. **Maak een Notion-integratie**
-   Ga naar https://www.notion.so/my-integrations → **New integration** →
-   type "Internal", geef 'm een naam (bv. `website-sync`) → **Save** →
-   kopieer de **Internal Integration Secret** (begint met `ntn_` of `secret_`).
+1. **Create a Notion integration**
+   Go to https://www.notion.so/my-integrations → **New integration** →
+   choose "Internal", give it a name (e.g. `website-sync`) → **Save** →
+   copy the **Internal Integration Secret** (starts with `ntn_` or `secret_`).
 
-2. **Geef de integratie toegang tot de database**
-   Open de database **"Julia T. — Website content"** in Notion →
-   knop `•••` rechtsboven → **Connections** → kies je integratie.
+2. **Give the integration access to the database**
+   Open the **"Julia T. — Website content"** database in Notion →
+   `•••` button (top right) → **Connections** → select your integration.
 
-3. **Zet de sleutel als GitHub-secret**
+3. **Add the key as a GitHub secret**
    GitHub repo → **Settings** → **Secrets and variables** → **Actions** →
-   **New repository secret** → naam `NOTION_TOKEN`, waarde = de sleutel uit stap 1.
+   **New repository secret** → name `NOTION_TOKEN`, value = the secret from step 1.
 
 4. **Test**
-   GitHub → tab **Actions** → *Sync content from Notion* → **Run workflow**.
-   Na ~1 min is `content.json` bijgewerkt en staat de wijziging live.
+   GitHub → **Actions** tab → *Sync content from Notion* → **Run workflow**.
+   After ~1 min `content.json` is updated and the change is live.
 
-De database-id staat al in de workflow, dus die hoef je niet in te stellen.
+The database id is already set in the workflow, so you don't need to configure it.
 
-## Voor Julia — content aanpassen
+## For Julia — editing content
 
-1. Open de Notion-database **"Julia T. — Website content"**.
-2. Bewerk alleen de kolom **Value**. Laat **Key** met rust.
-3. Klaar — binnen ~30 min staat het op de site (of eerder via *Run workflow* op GitHub).
+1. Open the **"Julia T. — Website content"** Notion database.
+2. Edit only the **Value** column. Leave **Key** untouched.
+3. Done — within ~30 min it's on the site (or sooner via *Run workflow* on GitHub).
 
-Leeg laten van `instagram_url` of `email` verbergt die knop automatisch.
+## Refreshing the site now (instead of waiting)
 
-## Foto toevoegen
+GitHub → **Actions** tab → *Sync content from Notion* → **Run workflow**.
+After ~1 min, reload the website (hard refresh: **Cmd/Ctrl + Shift + R**).
 
-Upload een `julia.jpg` in deze repo en vervang in `index.html` het blokje
-`<div class="about-photo">…</div>` door
+## Adding an ebook PDF
+
+The ebook download link is the `ebook1_url` field in Notion. Notion's own file
+attachments use temporary links that expire, so host the PDF elsewhere:
+
+1. Upload the PDF to **Google Drive** or **Dropbox**.
+2. Set sharing to *"anyone with the link"* and copy the share link.
+3. Paste it into the `ebook1_url` field (Value column) in Notion.
+
+Leave it blank or `#` and the button shows "PDF coming soon" instead.
+
+## Adding a photo
+
+Upload a `julia.jpg` to this repo and replace the
+`<div class="about-photo">…</div>` block in `index.html` with
 `<img src="julia.jpg" alt="Photo of Julia T.">`.
