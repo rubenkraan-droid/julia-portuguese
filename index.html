@@ -99,9 +99,8 @@
     .ebook .cover span{ font-weight:800; font-size:1.15rem; line-height:1.3; }
     .ebook h3{ font-size:1.15rem; }
     .ebook p{ color:var(--muted); font-size:.95rem; }
-    .pricing{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
-    @media(max-width:860px){ .pricing{ grid-template-columns:1fr; } }
-    @media(min-width:561px) and (max-width:860px){ .pricing{ grid-template-columns:1fr 1fr; } }
+    .pricing{ display:grid; grid-template-columns:repeat(2,1fr); gap:20px; max-width:620px; margin:0 auto; }
+    @media(max-width:560px){ .pricing{ grid-template-columns:1fr; } }
     .price-card{ text-align:center; position:relative; display:flex; flex-direction:column; }
     .price-card.popular{ border-color:var(--green); box-shadow:var(--shadow); }
     .price-card .tag{ position:absolute; top:-13px; left:50%; transform:translateX(-50%); background:var(--yellow); color:#3a2e00; font-weight:800; font-size:.72rem; letter-spacing:1px; text-transform:uppercase; padding:5px 12px; border-radius:999px; }
@@ -323,18 +322,6 @@
             <p class="sub" data-cms="price_single_sub">One 50-minute 1-on-1 lesson, fully tailored to you.</p>
             <a class="btn btn-primary book-link" href="https://preply.com/en/tutor/7573352" target="_blank" rel="noopener noreferrer">Book now</a>
           </div>
-          <div class="card price-card">
-            <h3>Package of 5</h3>
-            <div class="amt" data-cms="price_package5">—</div>
-            <p class="sub" data-cms="price_package5_sub">Great for building a routine.</p>
-            <a class="btn btn-ghost book-link" href="https://preply.com/en/tutor/7573352" target="_blank" rel="noopener noreferrer">Book package</a>
-          </div>
-          <div class="card price-card">
-            <h3>Package of 10</h3>
-            <div class="amt" data-cms="price_package10">—</div>
-            <p class="sub" data-cms="price_package10_sub">Best value for steady progress.</p>
-            <a class="btn btn-ghost book-link" href="https://preply.com/en/tutor/7573352" target="_blank" rel="noopener noreferrer">Book package</a>
-          </div>
         </div>
       </div>
     </section>
@@ -361,11 +348,6 @@
         <h2 data-cms="cta_heading">Ready to start speaking Portuguese?</h2>
         <p class="lead" style="margin:0 auto 26px;" data-cms="cta_text">All lessons are booked securely through Preply. Let's have a relaxed first chat!</p>
         <a class="btn btn-primary btn-big book-link" href="https://preply.com/en/tutor/7573352" target="_blank" rel="noopener noreferrer">Book on Preply</a>
-        <!-- Fill instagram_url / instagram_label / email in Notion, or leave blank to hide -->
-        <div class="socials">
-          <span id="ig-wrap">📸 <a class="ig-link" data-cms-href="instagram_url" data-cms="instagram_label" href="#" target="_blank" rel="noopener noreferrer">@yourhandle</a></span>
-          <span id="mail-wrap">✉️ <a class="mail-link" data-cms-mail="email" href="mailto:your@email.com">your@email.com</a></span>
-        </div>
       </div>
     </section>
   </main>
@@ -415,9 +397,6 @@
               var f = document.getElementById('introVideo'); if(f) f.setAttribute('src', src);
             }
           }
-          // Hide social links that were left blank
-          if(!c.instagram_url){ var ig=document.getElementById('ig-wrap'); if(ig) ig.style.display='none'; }
-          if(!c.email){ var mw=document.getElementById('mail-wrap'); if(mw) mw.style.display='none'; }
         })
         .catch(function(){ /* no content.json yet -> keep the built-in fallback text */ });
     })();
