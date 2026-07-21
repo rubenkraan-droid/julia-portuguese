@@ -282,8 +282,8 @@
             <div class="cover" aria-hidden="true"><span data-cms="ebook1_title">50 Everyday Brazilian Expressions</span></div>
             <h3 data-cms="ebook1_title">50 Everyday Brazilian Expressions</h3>
             <p data-cms="ebook1_desc">A pocket guide to the phrases Brazilians really use — with pronunciation tips and examples.</p>
-            <!-- Set the download link in Notion (key: ebook1_url) -->
-            <a class="btn btn-ghost" data-cms-href="ebook1_url" href="#" download>⬇ Download PDF</a>
+            <!-- Set the download link in Notion (key: ebook1_url). Handled by JS below. -->
+            <a class="btn btn-ghost ebook-dl" href="#">⬇ Download PDF</a>
           </article>
           <!-- Extra cards below are static placeholders (not in Notion). Duplicate the card above to add real ones. -->
           <article class="card ebook" style="opacity:.75;">
@@ -395,6 +395,27 @@
             if(m){
               var src = 'https://player.vimeo.com/video/'+m[1]+(m[2] ? '?h='+m[2]+'&' : '?')+'title=0&byline=0&portrait=0';
               var f = document.getElementById('introVideo'); if(f) f.setAttribute('src', src);
+            }
+          }
+          // Ebook download button: only enable when a real link is set in Notion.
+          var dl = document.querySelector('.ebook-dl');
+          if(dl){
+            var url = c.ebook1_url;
+            if(!url || String(url).trim() === '' || String(url).trim() === '#'){
+              dl.textContent = '📄 PDF coming soon';
+              dl.setAttribute('aria-disabled', 'true');
+              dl.style.opacity = '.55';
+              dl.style.pointerEvents = 'none';
+            } else {
+              dl.setAttribute('href', url);
+              if(/^https?:\/\//i.test(url)){
+                // External host (Google Drive, Dropbox…): open in a new tab.
+                dl.setAttribute('target', '_blank');
+                dl.setAttribute('rel', 'noopener noreferrer');
+              } else {
+                // File shipped in the repo: force a real download.
+                dl.setAttribute('download', '');
+              }
             }
           }
         })
